@@ -4,7 +4,17 @@ export function initialize(applicationInstance) {
   let dump = shoebox.retrieve('ember-data-store');
   if (!dump) { return; }
   let store = applicationInstance.lookup('service:store');
-  store.pushPayload(dump.records);
+
+  Object.keys(dump.records).forEach((modelName) => {
+    let recordsToPush = _.pick(dump.records, modelName);
+    if (Ember.isEmpty(recordsToPush[modelName])) { return; }
+
+    if (Object.keys(recordsToPush[modelName]).includes('data')) {
+      recordsToPush = recordsToPush[modelName];
+    }
+
+    store.pushPayload(modelName, recordsToPush);
+  });
 }
 
 export default {
