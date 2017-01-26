@@ -6,14 +6,16 @@ export function initialize(applicationInstance) {
   let store = applicationInstance.lookup('service:store');
 
   Object.keys(dump.records).forEach((modelName) => {
-    let recordsToPush = _.pick(dump.records, modelName);
+    let recordsToPush = {};
+    recordsToPush[modelName] = dump.records[modelName];
+
     if (Ember.isEmpty(recordsToPush[modelName])) { return; }
 
     if (Object.keys(recordsToPush[modelName]).includes('data')) {
       recordsToPush = recordsToPush[modelName];
     }
 
-    store.pushPayload(modelName, recordsToPush);
+    store.pushPayload(recordsToPush);
   });
 }
 
