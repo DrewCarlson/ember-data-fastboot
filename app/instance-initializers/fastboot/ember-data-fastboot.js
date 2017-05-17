@@ -1,13 +1,13 @@
 export function initialize(applicationInstance) {
   let store = applicationInstance.lookup('service:store');
   let shoebox = applicationInstance.lookup('service:fastboot').get('shoebox');
+  const modelNames = applicationInstance.lookup('data-adapter:main').getModelTypes().mapBy('name');
 
   shoebox.put('ember-data-store', {
     get records() {
       let serializedRecords = {};
 
-      Object.keys(store.typeMaps).map(k => {
-        let name = store.typeMaps[k].type.modelName;
+      modelNames.map(name => {
         serializedRecords[name] = [];
         return store.peekAll(name).toArray();
       }).reduce((a,b) => a.concat(b), [])

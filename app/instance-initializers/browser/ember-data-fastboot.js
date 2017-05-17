@@ -15,7 +15,7 @@ export function initialize(applicationInstance) {
       recordsToPush = recordsToPush[modelName];
     }
 
-    store.pushPayload(recordsToPush);
+    store.pushPayload('application', recordsToPush);
   });
 }
 
